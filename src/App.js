@@ -1,45 +1,32 @@
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+import Login from "./components/Login";
 import ReactBootstrapReg from "./components/ReactBootstrapReg";
-import app from "./firebase.init";
+import Main from "./layout/Main";
 function App() {
-  const auth = getAuth(app);
-  const googleProvider = new GoogleAuthProvider();
-  const handleRegister = (event) => {
-    event.preventDefault();
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    console.log(email, password);
-  };
-
-  const handleEmailChange = (e) => {
-    console.log(e.target.value);
-  };
-  const handlePassChange = (e) => {
-    console.log(e.target.value);
-  };
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Main></Main>,
+      children: [
+        {
+          path: "/",
+          element: <ReactBootstrapReg></ReactBootstrapReg>,
+        },
+        {
+          path: "/register",
+          element: <ReactBootstrapReg></ReactBootstrapReg>,
+        },
+        {
+          path: "/login",
+          element: <Login></Login>,
+        },
+      ],
+    },
+  ]);
   return (
-    <div className="">
-      <form onSubmit={(event) => handleRegister(event)}>
-        <input
-          onChange={(e) => handleEmailChange(e)}
-          type="email"
-          placeholder="Your Email"
-          name="email"
-          id=""
-        />
-        <br />
-        <input
-          onChange={(e) => handlePassChange(e)}
-          type="password"
-          placeholder="Your PassWord"
-          name="password"
-          id=""
-        />
-        <br />
-        <button type="submit">Register</button>
-      </form>
-      <ReactBootstrapReg></ReactBootstrapReg>
+    <div>
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }
